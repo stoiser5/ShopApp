@@ -1,12 +1,37 @@
-﻿using System;
+﻿using ShopApp.Controllers;
+using ShopApp.Models;
+using ShopApp.Repositories;
+using System.Threading.Tasks;
 
 namespace ShopApp
 {
-    class Program
+    public class Program
     {
-        static void Main(string[] args)
+        public static async Task MainAsync()
         {
-            Console.WriteLine("Hello World!");
+            Order newOrder = new Order
+            {
+                Product = new Product()
+                {
+                    ProductId = "Inventory300-Cat-Nip-Treats"
+                },
+                ProductQuantity = 5,
+                Customer = new Customer()
+                {
+                    CustomerId = "11",
+                    CreditCardNumber = "111111111111",
+                    Email = "sigrid@gmail.com"
+                }
+            };
+
+            OrderController orderController = new OrderController(new ProductRepository());
+
+            await orderController.ProcessOrder(newOrder);
+        }
+
+        public static void Main(string[] args)
+        {
+            MainAsync().Wait();
         }
     }
 }
